@@ -1,0 +1,9 @@
+gtk-key-theme-name = "Emacs"
+
+
+# style "font"
+# {
+# font_name = "DejaVu Sans 14"
+# }
+# widget_class "*" style "font"
+# gtk-font-name = "DejaVu Sans 14"

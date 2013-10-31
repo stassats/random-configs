@@ -1,0 +1,15 @@
+URxvt.background: white
+URxvt.foreground: black
+URxvt.font: xft:Deja Vu Sans Mono:size=13
+URxvt.scrollBar: false
+URxvt.url-launcher: browser
+URxvt.perl-ext-common: default,matcher
+URxvt.matcher.button: 1
+
+
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.hintstyle: hintfull
+Xft.rgba: none
+Xft.autohint: 1
+

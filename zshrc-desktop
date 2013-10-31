@@ -1,0 +1,104 @@
+PROMPT=$'%{\e[0m%}%B%n@%m: %~%#%b%{\e[0m%} '
+
+case $TERM in
+    screen)
+        precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+        ;;
+    dumb)                       # for emacs tramp
+        unsetopt zle && PS1='$ '
+        ;;
+esac
+
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh/history
+  
+setopt SHARE_HISTORY HIST_IGNORE_ALL_DUPS HIST_REDUCE_BLANKS \
+    HIST_SAVE_NO_DUPS HIST_VERIFY NO_BANG_HIST \
+    HIST_IGNORE_SPACE
+
+bindkey '^[P' history-beginning-search-backward
+bindkey '^[N' history-beginning-search-forward
+
+setopt CORRECT AUTO_CD
+setopt NULL_GLOB
+unsetopt beep
+
+# Completion
+zmodload zsh/complist
+
+zle -C complete expand-or-complete completer
+
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+zstyle ':completion:*:processes' command 'ps -xu' 
+zstyle ':completion:*:processes' sort false
+zstyle ':completion:*:processes-names' command 'ps xho command'
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.config/zsh/cache
+
+autoload -U compinit
+compinit -d ~/.config/zsh/zcompdump
+
+# Aliases
+alias -g L='| less'
+alias -g G='| grep'
+alias -g GI='|grep -i'
+alias -g H='| head'
+alias -g T='| tail'
+
+export EDITOR='emacsclient'
+
+alias cal="cal -m"
+alias ls="ls -F -T 0 -b --color=always"
+alias ec="$EDITOR -n"
+alias mpc='mpc --format "%artist% - %title% (%album%)"'
+alias 0='(rj -d "^0")'
+alias tou='mid3iconv -e CP1251'
+alias stx="(cd;startx >& /dev/null) &"
+alias mp="mplayer -fs"
+alias mpvd="mplayer -fs -profile vdpau"
+alias cp="cp -a"
+alias dc=cd
+
+export GREP_OPTIONS='--color=auto'
+export GREP_COLOR='1;32'
+export LESS=-R
+export EDITOR=emacsclient
+
+export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
+PATH=~/lisp/bin:~/c/bin:/sbin:/usr/sbin:~/c/android-sdk-linux/tools/:~/c/android-sdk-linux/platform-tools:$PATH
+
+qt5() {
+    export QTDIR=~/down/qt-5
+    export LD_LIBRARY_PATH=$QTDIR/lib
+    export PKG_CONFIG_PATH=$QTDIR/lib/pkgconfig/
+    PATH=$QTDIR/bin:$PATH
+    export CMAKE_INCLUDE_PATH=$QTDIR/lib/cmake/
+    export PATH
+}
+typeset -U path
+
+export PATH
+
+export CFLAGS="-march=native"
+export CFLAGS=""
+export CXXFLAGS="${CFLAGS}"
+eval `dircolors -b ~/.config/zsh/dir_colors`
+export LC_MESSAGES=en_US.UTF-8
+export CVS_RSH=ssh
+export MANPATH=$MANPATH:/usr/local/share/man
+export PYTHONSTARTUP=~/.config/pythonrc
+export RLWRAP_HOME=~/.config/rlwrap
+export CHROME_DEVEL_SANDBOX=/home/stas/c/chrome-linux/chrome_sandbox
+
+alias rtorrent="rtorrent; rm -f /tmp/rtorrent-rpc.socket"
+alias sloccount="mkdir -p /tmp/slocdata; sloccount --datadir /tmp/slocdata"
+
+alias dpmsoff="xset s off s noblank dpms 0 0 0 -dpms"
+alias dpmson="xset dpms 600 600 600"
+alias usbon="sudo ifup usb0"
+alias usboff="sudo ifdown usb0"
+

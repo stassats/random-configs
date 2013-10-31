@@ -1,0 +1,23 @@
+# rTorrent config
+
+directory = /home/stas/down
+session = /home/stas/.config/rtrsession
+
+bind = 192.168.1.2
+port_range = 7884-7884
+dht = off
+dht_port = 7887
+use_udp_trackers = yes 
+
+check_hash = no
+
+encryption = allow_incoming,try_outgoing
+
+scgi_local = /tmp/rtorrent-rpc.socket
+# schedule = low_diskspace,5,60,close_low_diskspace=100M
+
+# schedule = watch_directory,15,5,"load=~/*.torrent"
+# system.method.set_key = event.download.inserted_new,remove_torrent,d.delete_tied=
+
+upload_rate = 5
+download_rate = 550

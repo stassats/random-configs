@@ -1,0 +1,98 @@
+PROMPT=$'%{\e[0m%}%B%n@%m: %~%#%b%{\e[0m%} '
+
+case $TERM in
+    screen)
+        precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+        ;;
+    dumb)                       # for emacs tramp
+        unsetopt zle && PS1='$ '
+        ;;
+esac
+
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh/history
+  
+setopt SHARE_HISTORY HIST_IGNORE_ALL_DUPS HIST_REDUCE_BLANKS \
+    HIST_SAVE_NO_DUPS HIST_VERIFY NO_BANG_HIST \
+    HIST_IGNORE_SPACE
+
+bindkey '^[P' history-beginning-search-backward
+bindkey '^[N' history-beginning-search-forward
+
+setopt CORRECT AUTO_CD
+setopt NULL_GLOB
+unsetopt beep
+
+# Completion
+zmodload zsh/complist
+
+zle -C complete expand-or-complete completer
+
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+zstyle ':completion:*:processes' command 'ps -xu' 
+zstyle ':completion:*:processes' sort false
+zstyle ':completion:*:processes-names' command 'ps xho command'
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.config/zsh/cache
+
+autoload -U compinit
+compinit -d ~/.config/zsh/zcompdump
+
+# Aliases
+alias -g L='| less'
+alias -g G='| grep'
+alias -g GI='|grep -i'
+alias -g H='| head'
+alias -g T='| tail'
+
+alias cal="cal -m"
+alias ls="ls -F -T 0 -b --color=always"
+alias ec="$EDITOR -n"
+alias mpc='mpc --format "%artist% - %title% (%album%)"'
+alias 0='(rj -d "^0")'
+alias tou='mid3iconv -e CP1251'
+alias stx="(cd;startx >& /dev/null) &"
+alias mp="mplayer -fs -cache 10000"
+alias mpv="mplayer -fs -cache 8000 -vc ffh264vdpau"
+alias cp="cp -a"
+alias dc=cd
+
+export GREP_OPTIONS='--color=auto'
+export GREP_COLOR='1;32'
+export LESS=-R
+export EDITOR=emacsclient
+
+PATH=~/lisp/bin:~/c/bin:/sbin:/usr/sbin:$PATH
+
+typeset -U path
+
+export PATH
+
+export CFLAGS="-march=native"
+export CFLAGS=""
+export CXXFLAGS="${CFLAGS}"
+eval `dircolors -b ~/.config/zsh/dir_colors`
+export LC_MESSAGES=en_US.UTF-8
+export CVS_RSH=ssh
+export MANPATH=$MANPATH:/usr/local/share/man
+export PYTHONSTARTUP=~/.config/pythonrc
+export RLWRAP_HOME=~/.config/rlwrap
+export CHROME_DEVEL_SANDBOX=/home/stas/c/chrome-linux/chrome_sandbox
+
+alias sloccount="mkdir -p /tmp/slocdata; sloccount --datadir /tmp/slocdata"
+alias wlon="sudo ifup wlan0"
+alias wloff="sudo ifdown wlan0"
+alias rewl="sudo ifdown wlan0; sudo ifup wlan0"
+# . ~/.zsh/mouse.zsh
+export MPD_HOST=desktop
+alias bton="sudo sh -c 'echo enable > /proc/acpi/ibm/bluetooth wlan0'"
+alias btoff="sudo sh -c 'echo disable > /proc/acpi/ibm/bluetooth wlan0'"
+alias usbon="sudo ifup usb0"
+alias usboff="sudo ifdown usb0"
+alias reusb="sudo ifdown usb0; sudo ifup usb0"
+alias dpmsoff="xset s off; xset s noblank; xset dpms 0 0 0; xset -dpms"
+alias dpmson="xset dpms 600 600 600"
